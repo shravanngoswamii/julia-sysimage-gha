@@ -8,5 +8,8 @@ create_sysimage(
     ];
     sysimage_path=joinpath(@__DIR__, "sysimage.so"),
     precompile_execution_file=joinpath(@__DIR__, "warmup.jl"),
-    cpu_target=PackageCompiler.default_app_cpu_target(),
+    # LLVM excludes AES-NI from generic/sandybridge/haswell targets by default.
+    # Julia 1.12+ uses AES intrinsics internally, so +aes is required on ALL
+    # target slices — LLVM compiles code for each slice independently.
+    cpu_target="generic,+aes;sandybridge,+aes,-xsaveopt,clone_all;haswell,+aes,-rdrnd,base(1)",
 )
