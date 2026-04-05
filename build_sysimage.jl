@@ -4,8 +4,8 @@ create_sysimage(
     [:CSV, :DataFrames, :Distributions, :ForwardDiff, :JSON, :SpecialFunctions, :StableRNGs];
     sysimage_path=joinpath(@__DIR__, "sysimage.so"),
     precompile_execution_file=joinpath(@__DIR__, "warmup.jl"),
-    # LLVM's "generic" x86-64 target cannot select AES-NI intrinsics even with +aes,
-    # causing "Cannot select: intrinsic %llvm.x86.aesni.*" during compilation.
-    # Using sandybridge (2011+, includes AES-NI natively) as minimum baseline instead.
-    cpu_target="sandybridge,-xsaveopt,clone_all;haswell,-rdrnd,base(1)",
+    # LLVM excludes AES-NI from generic/sandybridge/haswell targets (not all SKUs have it).
+    # Code is compiled for every target slice, so +aes must be on ALL slices or LLVM aborts
+    # with "Cannot select: intrinsic %llvm.x86.aesni.*" on the slices that lack it.
+    cpu_target="generic,+aes;sandybridge,+aes,-xsaveopt,clone_all;haswell,+aes,-rdrnd,base(1)",
 )
