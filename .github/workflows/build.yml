@@ -12,13 +12,14 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      # Allocate 10GB swap space using dd to bypass runner filesystem restrictions
+      # Allocate 10GB of additional swap space using a unique filename 
+      # to prevent collisions with the runner's default OS configuration.
       - name: Add swap space
         run: |
-          sudo dd if=/dev/zero of=/swapfile bs=1M count=10240
-          sudo chmod 600 /swapfile
-          sudo mkswap /swapfile
-          sudo swapon /swapfile
+          sudo dd if=/dev/zero of=/swapfile-extra bs=1M count=10240
+          sudo chmod 600 /swapfile-extra
+          sudo mkswap /swapfile-extra
+          sudo swapon /swapfile-extra
 
       - uses: julia-actions/setup-julia@v2
         with:
