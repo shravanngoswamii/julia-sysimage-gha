@@ -1,11 +1,7 @@
 using PackageCompiler
 
 create_sysimage(
-    [
-        :JuliaBUGS, :Turing, :AbstractMCMC, :AdvancedHMC, :ForwardDiff,
-        :StableRNGs, :Distributions, :CSV, :DataFrames, :HTTP, :JSON,
-        :OnlineStats, :OnlineStatsBase, :TensorBoardLogger, :YAML,
-    ];
+    [:CSV, :DataFrames, :Distributions, :ForwardDiff, :JSON, :SpecialFunctions, :StableRNGs];
     sysimage_path=joinpath(@__DIR__, "sysimage.so"),
     precompile_execution_file=joinpath(@__DIR__, "warmup.jl"),
     # "generic" excludes AES-NI, but Julia 1.12 uses AES intrinsics internally.
