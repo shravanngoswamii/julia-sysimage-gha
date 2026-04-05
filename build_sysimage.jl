@@ -1,7 +1,11 @@
 using PackageCompiler
 
 create_sysimage(
-    [:CSV, :DataFrames, :Distributions, :ForwardDiff, :JSON, :SpecialFunctions, :StableRNGs];
+    [
+        :JuliaBUGS, :Turing, :AbstractMCMC, :AdvancedHMC, :ForwardDiff,
+        :StableRNGs, :Distributions, :CSV, :DataFrames, :HTTP, :JSON,
+        :OnlineStats, :OnlineStatsBase, :TensorBoardLogger, :YAML,
+    ];
     sysimage_path=joinpath(@__DIR__, "sysimage.so"),
     precompile_execution_file=joinpath(@__DIR__, "warmup.jl"),
     # LLVM excludes AES-NI from generic/sandybridge/haswell targets (not all SKUs have it).
