@@ -12,6 +12,15 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      # Allocates 10GB of swap space to prevent Out-Of-Memory (OOM) kills 
+      # during the resource-intensive Julia sysimage compilation.
+      - name: Add swap space
+        run: |
+          sudo fallocate -l 10G /swapfile
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
+
       - uses: julia-actions/setup-julia@v2
         with:
           version: "1.12"
