@@ -35,7 +35,7 @@ jobs:
         run: julia --sysimage=sysimage.so --project test_sysimage.jl
 
       - name: Upload sysimage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: sysimage
           path: sysimage.so
