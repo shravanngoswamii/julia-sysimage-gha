@@ -12,11 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      # Allocates 10GB of swap space to prevent Out-Of-Memory (OOM) kills 
-      # during the resource-intensive Julia sysimage compilation.
+      # Allocate 10GB swap space using dd to bypass runner filesystem restrictions
       - name: Add swap space
         run: |
-          sudo fallocate -l 10G /swapfile
+          sudo dd if=/dev/zero of=/swapfile bs=1M count=10240
           sudo chmod 600 /swapfile
           sudo mkswap /swapfile
           sudo swapon /swapfile
